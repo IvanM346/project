@@ -1,0 +1,107 @@
+<svg viewBox="0 0 1150 700" xmlns="http://www.w3.org/2000/svg" font-family="Helvetica, Arial, sans-serif">
+  <rect x="0" y="0" width="1150" height="700" fill="#ffffff"/>
+
+  <rect x="10" y="10" width="1130" height="56" rx="6" fill="#ffffff" stroke="#1f2328" stroke-width="1.5"/>
+  <text x="34" y="46" font-size="24" font-weight="700" fill="#1f2328">Data Flow <tspan font-weight="400" font-size="18">(data lineage)</tspan></text>
+
+  <text x="60" y="110" font-size="16" font-weight="700" fill="#1f2328">Sources</text>
+  <text x="330" y="110" font-size="16" font-weight="700" fill="#1f2328">Bronze</text>
+  <text x="600" y="110" font-size="16" font-weight="700" fill="#1f2328">Silver</text>
+  <text x="880" y="110" font-size="16" font-weight="700" fill="#1f2328">Gold</text>
+
+  <rect x="30" y="130" width="140" height="300" fill="none" stroke="#9aa0a6" stroke-dasharray="4,3"/>
+
+  <!-- CRM / ERP source boxes -->
+  <rect x="50" y="200" width="100" height="40" rx="4" fill="#dbe9fe" stroke="#4c8bf5"/>
+  <text x="100" y="225" text-anchor="middle" font-size="13" font-weight="700" fill="#1f2328">CRM</text>
+  <rect x="50" y="380" width="100" height="40" rx="4" fill="#fdf0d5" stroke="#e8a33d"/>
+  <text x="100" y="405" text-anchor="middle" font-size="13" font-weight="700" fill="#1f2328">ERP</text>
+
+  <!-- helper to draw row boxes -->
+  <!-- bronze rows -->
+  <g font-size="12" fill="#1f2328">
+    <rect x="300" y="140" width="190" height="34" rx="3" fill="#fdf0d5" stroke="#e8a33d"/>
+    <text x="395" y="162" text-anchor="middle">crm_sales_details</text>
+
+    <rect x="300" y="190" width="190" height="34" rx="3" fill="#fdf0d5" stroke="#e8a33d"/>
+    <text x="395" y="212" text-anchor="middle">crm_cust_info</text>
+
+    <rect x="300" y="240" width="190" height="34" rx="3" fill="#fdf0d5" stroke="#e8a33d"/>
+    <text x="395" y="262" text-anchor="middle">crm_prd_info</text>
+
+    <rect x="300" y="330" width="190" height="34" rx="3" fill="#fdf0d5" stroke="#e8a33d"/>
+    <text x="395" y="352" text-anchor="middle">erp_cust_az12</text>
+
+    <rect x="300" y="380" width="190" height="34" rx="3" fill="#fdf0d5" stroke="#e8a33d"/>
+    <text x="395" y="402" text-anchor="middle">erp_loc_a101</text>
+
+    <rect x="300" y="430" width="190" height="34" rx="3" fill="#fdf0d5" stroke="#e8a33d"/>
+    <text x="395" y="452" text-anchor="middle">erp_px_cat_g1v2</text>
+  </g>
+
+  <!-- silver rows (same order) -->
+  <g font-size="12" fill="#1f2328">
+    <rect x="570" y="140" width="190" height="34" rx="3" fill="#f1f2f3" stroke="#9aa0a6"/>
+    <text x="665" y="162" text-anchor="middle">crm_sales_details</text>
+
+    <rect x="570" y="190" width="190" height="34" rx="3" fill="#f1f2f3" stroke="#9aa0a6"/>
+    <text x="665" y="212" text-anchor="middle">crm_cust_info</text>
+
+    <rect x="570" y="240" width="190" height="34" rx="3" fill="#f1f2f3" stroke="#9aa0a6"/>
+    <text x="665" y="262" text-anchor="middle">crm_prd_info</text>
+
+    <rect x="570" y="330" width="190" height="34" rx="3" fill="#f1f2f3" stroke="#9aa0a6"/>
+    <text x="665" y="352" text-anchor="middle">erp_cust_az12</text>
+
+    <rect x="570" y="380" width="190" height="34" rx="3" fill="#f1f2f3" stroke="#9aa0a6"/>
+    <text x="665" y="402" text-anchor="middle">erp_loc_a101</text>
+
+    <rect x="570" y="430" width="190" height="34" rx="3" fill="#f1f2f3" stroke="#9aa0a6"/>
+    <text x="665" y="452" text-anchor="middle">erp_px_cat_g1v2</text>
+  </g>
+
+  <!-- gold boxes -->
+  <g font-size="13" fill="#1f2328" font-weight="700">
+    <rect x="850" y="140" width="190" height="34" rx="3" fill="#fdf7dc" stroke="#e4c441"/>
+    <text x="945" y="162" text-anchor="middle">fact_sales</text>
+
+    <rect x="850" y="280" width="190" height="34" rx="3" fill="#fdf7dc" stroke="#e4c441"/>
+    <text x="945" y="302" text-anchor="middle">dim_customers</text>
+
+    <rect x="850" y="420" width="190" height="34" rx="3" fill="#fdf7dc" stroke="#e4c441"/>
+    <text x="945" y="442" text-anchor="middle">dim_products</text>
+  </g>
+
+  <!-- arrows: source -> bronze -->
+  <g stroke="#1f2328" stroke-width="1.3" fill="none">
+    <path d="M150 220 L 220 220 L 220 157 L 300 157"/>
+    <path d="M150 220 L 220 220 L 220 207 L 300 207"/>
+    <path d="M150 220 L 220 220 L 220 257 L 300 257"/>
+    <path d="M150 400 L 230 400 L 230 347 L 300 347"/>
+    <path d="M150 400 L 230 400 L 230 397 L 300 397"/>
+    <path d="M150 400 L 230 400 L 230 447 L 300 447"/>
+  </g>
+
+  <!-- arrows: bronze -> silver (straight, same row) -->
+  <g stroke="#1f2328" stroke-width="1.3">
+    <line x1="490" y1="157" x2="570" y2="157"/>
+    <line x1="490" y1="207" x2="570" y2="207"/>
+    <line x1="490" y1="257" x2="570" y2="257"/>
+    <line x1="490" y1="347" x2="570" y2="347"/>
+    <line x1="490" y1="397" x2="570" y2="397"/>
+    <line x1="490" y1="447" x2="570" y2="447"/>
+  </g>
+
+  <!-- arrows: silver -> gold (converging) -->
+  <g stroke="#1f2328" stroke-width="1.3" fill="none">
+    <!-- crm_sales_details -> fact_sales -->
+    <path d="M760 157 L 850 157"/>
+    <!-- crm_cust_info, erp_cust_az12, erp_loc_a101 -> dim_customers -->
+    <path d="M760 207 L 800 207 L 800 297 L 850 297"/>
+    <path d="M760 347 L 800 347 L 800 297 L 850 297"/>
+    <path d="M760 397 L 800 397 L 800 297 L 850 297"/>
+    <!-- crm_prd_info, erp_px_cat_g1v2 -> dim_products -->
+    <path d="M760 257 L 820 257 L 820 437 L 850 437"/>
+    <path d="M760 447 L 820 447 L 820 437 L 850 437"/>
+  </g>
+</svg>
