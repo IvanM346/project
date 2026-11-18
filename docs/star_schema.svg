@@ -1,0 +1,121 @@
+<svg viewBox="0 0 1180 620" xmlns="http://www.w3.org/2000/svg" font-family="Helvetica, Arial, sans-serif">
+  <rect x="0" y="0" width="1180" height="620" fill="#ffffff"/>
+
+  <!-- title bar -->
+  <rect x="120" y="10" width="940" height="60" rx="6" fill="#ffffff" stroke="#1f2328" stroke-width="1.5"/>
+  <text x="150" y="48" font-size="26" font-weight="700" fill="#1f2328">Sales Data Mart <tspan font-weight="400" font-size="20">(Star Schema)</tspan></text>
+
+  <!-- ===================== connectors ===================== -->
+  <g stroke="#1f2328" stroke-width="1.5" fill="none">
+    <!-- customers.customer_key (PK, y=239) -> fact.customer_key (FK2, y=265) -->
+    <path d="M 370 239 H 412 V 265 H 447"/>
+    <!-- tick (one) near customers -->
+    <line x1="379" y1="232" x2="379" y2="246"/>
+    <!-- crow's foot (many) near fact -->
+    <line x1="455" y1="265" x2="447" y2="259"/>
+    <line x1="455" y1="265" x2="447" y2="271"/>
+
+    <!-- products.product_key (PK, y=239) -> fact.product_key (FK1, y=239) -->
+    <path d="M 810 239 H 725"/>
+    <line x1="801" y1="232" x2="801" y2="246"/>
+    <line x1="725" y1="239" x2="733" y2="233"/>
+    <line x1="725" y1="239" x2="733" y2="245"/>
+  </g>
+
+  <!-- ============ gold.dim_customers ============ -->
+  <g>
+    <rect x="110" y="190" width="260" height="390" rx="4" fill="#ffffff" stroke="#e8a33d" stroke-width="1.5"/>
+    <rect x="110" y="190" width="260" height="36" fill="#fdf0d5" stroke="#e8a33d" stroke-width="1.5"/>
+    <text x="240" y="213" text-anchor="middle" font-size="15" font-weight="700" fill="#1f2328">gold.dim_customers</text>
+
+    <rect x="110" y="226" width="34" height="26" fill="#f4f4f4" stroke="#d8d8d8"/>
+    <text x="127" y="244" text-anchor="middle" font-size="12" font-weight="700" fill="#1f2328">PK</text>
+    <rect x="144" y="226" width="226" height="26" fill="#f4f4f4" stroke="#d8d8d8"/>
+    <text x="154" y="244" font-size="13" font-weight="700" text-decoration="underline" fill="#1f2328">customer_key</text>
+
+    <g font-size="13" fill="#1f2328">
+      <text x="154" y="278">customer_id</text>
+      <text x="154" y="303">customer_number</text>
+      <text x="154" y="328">first_name</text>
+      <text x="154" y="353">last_name</text>
+      <text x="154" y="378">country</text>
+      <text x="154" y="403">marital_status</text>
+      <text x="154" y="428">gender</text>
+      <text x="154" y="453">birth_date</text>
+      <text x="154" y="478">create_date</text>
+    </g>
+    <line x1="144" y1="252" x2="144" y2="580" stroke="#e8e8e8"/>
+  </g>
+
+  <!-- marital_status legend -->
+  <line x1="110" y1="397" x2="16" y2="397" stroke="#1f2328" stroke-width="1" stroke-dasharray="3,3"/>
+  <text x="10" y="382" font-size="13" font-weight="700" text-decoration="underline" fill="#1f2328">marital_status</text>
+  <text x="10" y="400" font-size="12" fill="#1f2328">- Married</text>
+  <text x="10" y="416" font-size="12" fill="#1f2328">- Single</text>
+
+  <!-- ============ gold.fact_sales ============ -->
+  <g>
+    <rect x="455" y="150" width="270" height="430" rx="4" fill="#ffffff" stroke="#4c8bf5" stroke-width="1.5"/>
+    <rect x="455" y="150" width="270" height="36" fill="#dbe9fe" stroke="#4c8bf5" stroke-width="1.5"/>
+    <text x="590" y="173" text-anchor="middle" font-size="15" font-weight="700" fill="#1f2328">gold.fact_sales</text>
+
+    <text x="470" y="212" font-size="13" fill="#1f2328">order_number</text>
+
+    <rect x="455" y="226" width="40" height="26" fill="#f4f4f4" stroke="#d8d8d8"/>
+    <text x="475" y="244" text-anchor="middle" font-size="11" font-weight="700" fill="#1f2328">FK1</text>
+    <rect x="495" y="226" width="230" height="26" fill="#f4f4f4" stroke="#d8d8d8"/>
+    <text x="505" y="244" font-size="13" font-weight="700" fill="#1f2328">product_key</text>
+
+    <rect x="455" y="252" width="40" height="26" fill="#f4f4f4" stroke="#d8d8d8"/>
+    <text x="475" y="270" text-anchor="middle" font-size="11" font-weight="700" fill="#1f2328">FK2</text>
+    <rect x="495" y="252" width="230" height="26" fill="#f4f4f4" stroke="#d8d8d8"/>
+    <text x="505" y="270" font-size="13" font-weight="700" fill="#1f2328">customer_key</text>
+
+    <g font-size="13" fill="#1f2328">
+      <text x="505" y="303">order_date</text>
+      <text x="505" y="328">shipping_date</text>
+      <text x="505" y="353">due_date</text>
+      <text x="505" y="378">sales_amount</text>
+      <text x="505" y="403">quantity</text>
+      <text x="505" y="428">price</text>
+    </g>
+    <line x1="495" y1="278" x2="495" y2="580" stroke="#e8e8e8"/>
+  </g>
+
+  <!-- Sales Calculation callout -->
+  <line x1="650" y1="403" x2="686" y2="492" stroke="#1f2328" stroke-width="1" stroke-dasharray="3,3"/>
+  <text x="600" y="512" font-size="13" font-weight="700" text-decoration="underline" fill="#1f2328">Sales Calculation</text>
+  <text x="600" y="530" font-size="12" fill="#1f2328">sales_amount = quantity * price</text>
+
+  <!-- ============ gold.dim_products ============ -->
+  <g>
+    <rect x="810" y="190" width="260" height="390" rx="4" fill="#ffffff" stroke="#e8a33d" stroke-width="1.5"/>
+    <rect x="810" y="190" width="260" height="36" fill="#fdf0d5" stroke="#e8a33d" stroke-width="1.5"/>
+    <text x="940" y="213" text-anchor="middle" font-size="15" font-weight="700" fill="#1f2328">gold.dim_products</text>
+
+    <rect x="810" y="226" width="34" height="26" fill="#f4f4f4" stroke="#d8d8d8"/>
+    <text x="827" y="244" text-anchor="middle" font-size="12" font-weight="700" fill="#1f2328">PK</text>
+    <rect x="844" y="226" width="226" height="26" fill="#f4f4f4" stroke="#d8d8d8"/>
+    <text x="854" y="244" font-size="13" font-weight="700" text-decoration="underline" fill="#1f2328">product_key</text>
+
+    <g font-size="13" fill="#1f2328">
+      <text x="854" y="278">product_id</text>
+      <text x="854" y="303">product_number</text>
+      <text x="854" y="328">product_name</text>
+      <text x="854" y="353">category_id</text>
+      <text x="854" y="378">category</text>
+      <text x="854" y="403">subcategory</text>
+      <text x="854" y="428">maintenance</text>
+      <text x="854" y="453">cost</text>
+      <text x="854" y="478">product_line</text>
+      <text x="854" y="503">start_date</text>
+    </g>
+    <line x1="844" y1="252" x2="844" y2="580" stroke="#e8e8e8"/>
+  </g>
+
+  <!-- maintenance legend -->
+  <line x1="1070" y1="421" x2="1164" y2="421" stroke="#1f2328" stroke-width="1" stroke-dasharray="3,3"/>
+  <text x="1080" y="406" font-size="13" font-weight="700" text-decoration="underline" fill="#1f2328">maintenance</text>
+  <text x="1080" y="424" font-size="12" fill="#1f2328">- Yes</text>
+  <text x="1080" y="440" font-size="12" fill="#1f2328">- No</text>
+</svg>
