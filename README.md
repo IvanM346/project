@@ -29,7 +29,7 @@ project/
 
 ## Как запустить
 
-1. Скачай исходные CSV из [репозитория Data with Baraa](https://github.com/DataWithBaraa/sql-data-warehouse-project) или возьми их из папки `datasets`. Помести папки `source_crm` и `source_erp` в `C:\sql\crm_erp\` или укажи фактические пути в шести командах `BULK INSERT`.
+1. Скачай исходные CSV из папки `datasets`. Помести папки `source_crm` и `source_erp` в `C:\sql\crm_erp\` или укажи фактические пути в шести командах `BULK INSERT`.
 2. Подключись к SQL Server через SSMS и выполни скрипты из папки `scripts/bronze` в этом порядке.
    1. `init_bronze.sql` создаёт базу `DataWarehouse` и схему `bronze`.
    2. `ddl_bronze.sql` создаёт шесть таблиц.
