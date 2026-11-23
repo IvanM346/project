@@ -1,4 +1,7 @@
 -- Product sales by year (Продажи товаров по годам)
+USE DataWarehouseAnalytics;
+GO
+
 WITH yearly_product_sales AS (
     SELECT
         YEAR(f.order_date)  AS order_year,

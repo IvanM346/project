@@ -1,4 +1,7 @@
 -- Product and customer segments (Группы товаров и клиентов)
+USE DataWarehouseAnalytics;
+GO
+
 -- Group products by cost (Группировка товаров по стоимости)
 WITH product_segment AS(
 SELECT

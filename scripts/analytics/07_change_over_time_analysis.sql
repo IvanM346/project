@@ -1,4 +1,7 @@
 -- Monthly sales trends (Продажи по месяцам)
+USE DataWarehouseAnalytics;
+GO
+
 SELECT
     YEAR(order_date)             AS order_year,
     MONTH(order_date)            AS order_month,

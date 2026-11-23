@@ -1,4 +1,7 @@
 -- Cumulative sales and average price (Накопленные продажи и средняя цена)
+USE DataWarehouseAnalytics;
+GO
+
 -- Calculate running values from yearly totals (Накопительные показатели по годовым итогам)
 SELECT
     order_date,
@@ -13,4 +16,4 @@ FROM (
     FROM gold.fact_sales
     WHERE order_date IS NOT NULL
     GROUP BY DATETRUNC(YEAR, order_date)
-)t
+)t;

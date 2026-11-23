@@ -1,4 +1,7 @@
 -- Customer report (Отчёт по клиентам)
+USE DataWarehouseAnalytics;
+GO
+
 -- Join sales with customer details (Соединяем продажи с данными клиентов)
 WITH base_query AS (
     SELECT
@@ -72,4 +75,4 @@ SELECT
         WHEN lifespan = 0 THEN total_sales
         ELSE total_sales / lifespan
     END AS avg_monthly_spend
-FROM customer_aggregation
+FROM customer_aggregation;

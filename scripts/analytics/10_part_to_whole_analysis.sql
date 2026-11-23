@@ -1,4 +1,7 @@
 -- Category share of total sales (Доля категории в общей выручке)
+USE DataWarehouseAnalytics;
+GO
+
 WITH category_sales AS(
  SELECT
     category,

@@ -11,9 +11,9 @@ project/
 │   └── source_erp/         три файла из ERP
 ├── docs/                   схемы архитектуры и данных
 ├── scripts/                скрипты проекта, по уровням
-│   ├── analytics/          13 запросов для анализа слоя Gold
-│   ├── bronze/             загружает исходные файлы как есть
-│   ├── silver/             очищает и готовит данные
+│   ├── analytics/          подготовка аналитической БД и 13 запросов
+│   ├── bronze/             загрузка CSV, включая запуск в Docker
+│   ├── silver/             очистка и загрузка данных
 │   └── gold/               строит представления для анализа
 └── README.md
 ```
@@ -30,24 +30,34 @@ project/
 
 ## Как запустить
 
-1. Скачай исходные CSV из папки `datasets`. Помести папки `source_crm` и `source_erp` в `C:\sql\crm_erp\` или укажи фактические пути в шести командах `BULK INSERT`.
-2. Подключись к SQL Server через SSMS и выполни скрипты из папки `scripts/bronze` в этом порядке.
+Нужен SQL Server 2022: в аналитических запросах используется `DATETRUNC`.
+
+1. На Windows помести папки `source_crm` и `source_erp` из `datasets` в `C:\sql\crm_erp\`. На Mac с Docker запусти SQL Server 2022, узнай имя контейнера через `docker ps` и из корня проекта скопируй CSV, заменив `CONTAINER_NAME` на это имя:
+
+   ```bash
+   docker cp ./datasets/. CONTAINER_NAME:/var/opt/mssql/import
+   ```
+
+2. Подключись к SQL Server через SSMS или VS Code и выполни скрипты из `scripts/bronze` в этом порядке.
    1. `init_bronze.sql` создаёт базу `DataWarehouse` и схему `bronze`.
    2. `ddl_bronze.sql` создаёт шесть таблиц.
    3. `proc_load_bronze.sql` создаёт процедуру загрузки.
-   4. `run_bronze.sql` запускает загрузку CSV.
+   4. `run_bronze.sql` загружает CSV на Windows, а `run_bronze_docker.sql` — из Docker. Путь должен быть доступен SQL Server.
 3. Выполни скрипты из `scripts/silver`.
-   1. `ddl_silver.sql` создаёт таблицы Silver.
-   2. `proc_load_silver.sql` создаёт и запускает процедуру `silver.load_silver`.
+   1. `ddl_silver.sql` создаёт схему и таблицы Silver.
+   2. `proc_load_silver.sql` создаёт процедуру `silver.load_silver`.
+   3. `run_silver.sql` загружает данные.
 4. Выполни `scripts/gold/ddl_gold.sql` — он создаёт схему `gold` и три представления.
-5. Проверь, что количество строк в Bronze совпадает с количеством строк данных в соответствующем CSV без заголовка, а в Silver — не больше, чем в Bronze.
+5. Выполни `scripts/analytics/00_init_analytics.sql` — он создаёт `DataWarehouseAnalytics` и копирует в неё данные Gold. Если база и объекты уже есть, скрипт их не перезаписывает.
+6. Выполни запросы `01`–`12`, затем `13_report_products.sql` для создания отчёта по товарам.
 
 ## Аналитика
 
-В `scripts/analytics` лежат 13 SQL-файлов для анализа данных из Gold. Они помогают изучить продажи, клиентов и товары: от простых показателей до сравнений по времени и отчётов.
+В `scripts/analytics` лежат скрипт подготовки базы и 13 SQL-файлов для анализа данных из Gold. Они помогают изучить продажи, клиентов и товары: от простых показателей до сравнений по времени и отчётов.
 
 | Файл | Что делает |
 |---|---|
+| `00_init_analytics.sql` | Создаёт отдельную базу для анализа и копирует в неё Gold. |
 | `01_database_exploration.sql` | Изучает таблицы и столбцы Gold. |
 | `02_dimensions_exploration.sql` | Показывает значения в справочниках. |
 | `03_date_range_exploration.sql` | Находит диапазон дат заказов и возраст клиентов. |
@@ -60,9 +70,9 @@ project/
 | `10_part_to_whole_analysis.sql` | Считает долю каждой категории в продажах. |
 | `11_data_segmentation.sql` | Делит товары и клиентов на группы. |
 | `12_report_customers.sql` | Строит запрос с показателями по клиентам. |
-| `13_report_products.sql` | Создаёт представление с показателями по товарам. |
+| `13_report_products.sql` | Создаёт представление с показателями по товарам, у которых есть продажи с датой. |
 
-Для запуска нужна база `DataWarehouseAnalytics` с представлениями `gold.dim_customers`, `gold.dim_products` и `gold.fact_sales`. Скрипты `01`–`12` выполняются как запросы. Скрипт `13_report_products.sql` создаёт или обновляет представление; после него результат можно посмотреть через `SELECT * FROM gold.report_products;`.
+Скрипты `01`–`12` выполняются как запросы. Скрипт `13_report_products.sql` создаёт или обновляет представление; после него результат можно посмотреть через `SELECT * FROM gold.report_products;`. Товары без продаж и продажи без даты в этот отчёт не входят.
 
 ---
 
@@ -79,9 +89,9 @@ project/
 │   └── source_erp/         three files from the ERP system
 ├── docs/                   architecture and data diagrams
 ├── scripts/                the project scripts, by level
-│   ├── analytics/          13 queries for analyzing the Gold layer
-│   ├── bronze/             loads the raw source files
-│   ├── silver/             cleans and prepares the data
+│   ├── analytics/          analytics database setup and 13 queries
+│   ├── bronze/             loads CSV files, including Docker setup
+│   ├── silver/             cleans and loads the data
 │   └── gold/               builds the views for analysis
 └── README.md
 ```
@@ -98,24 +108,34 @@ Each rerun clears that level's tables and reloads the data in full.
 
 ## How to run
 
-1. Use the CSV files in `datasets`. Place `source_crm` and `source_erp` in `C:\sql\crm_erp\` or update the paths in all six `BULK INSERT` statements.
-2. Connect to SQL Server in SSMS and run the scripts in `scripts/bronze` in this order.
+SQL Server 2022 is required because the analytical queries use `DATETRUNC`.
+
+1. On Windows, place `source_crm` and `source_erp` from `datasets` in `C:\sql\crm_erp\`. On a Mac with Docker, start SQL Server 2022, find the container name with `docker ps`, then run this command from the project root with that name in place of `CONTAINER_NAME`:
+
+   ```bash
+   docker cp ./datasets/. CONTAINER_NAME:/var/opt/mssql/import
+   ```
+
+2. Connect to SQL Server using SSMS or VS Code and run the scripts in `scripts/bronze` in this order.
    1. `init_bronze.sql` creates the `DataWarehouse` database and the `bronze` schema.
    2. `ddl_bronze.sql` creates the six tables.
    3. `proc_load_bronze.sql` defines the loading procedure.
-   4. `run_bronze.sql` runs the CSV load.
+   4. `run_bronze.sql` loads the CSV files on Windows; `run_bronze_docker.sql` loads them in Docker. SQL Server must have access to the path.
 3. Run the scripts in `scripts/silver`.
-   1. `ddl_silver.sql` creates the Silver tables.
-   2. `proc_load_silver.sql` defines and runs the `silver.load_silver` procedure.
+   1. `ddl_silver.sql` creates the Silver schema and tables.
+   2. `proc_load_silver.sql` defines `silver.load_silver`.
+   3. `run_silver.sql` loads the data.
 4. Run `scripts/gold/ddl_gold.sql` — it creates the `gold` schema and the three views.
-5. Check row counts: Bronze should match the CSV row count (excluding the header); Silver should be at or below Bronze's count.
+5. Run `scripts/analytics/00_init_analytics.sql` — it creates `DataWarehouseAnalytics` and copies Gold data into it. Existing databases and objects are left unchanged.
+6. Run queries `01`–`12`, then `13_report_products.sql` to create the product report.
 
 ## Analytics
 
-The `scripts/analytics` folder contains 13 SQL files for analyzing Gold data. They cover sales, customers, and products, from basic measures to time comparisons and reports.
+The `scripts/analytics` folder contains a database setup script and 13 SQL files for analyzing Gold data. They cover sales, customers, and products, from basic measures to time comparisons and reports.
 
 | File | Purpose |
 |---|---|
+| `00_init_analytics.sql` | Create a separate analytics database and copy Gold data. |
 | `01_database_exploration.sql` | Explore Gold tables and columns. |
 | `02_dimensions_exploration.sql` | Explore dimension values. |
 | `03_date_range_exploration.sql` | Find order date ranges and customer ages. |
@@ -128,6 +148,6 @@ The `scripts/analytics` folder contains 13 SQL files for analyzing Gold data. Th
 | `10_part_to_whole_analysis.sql` | Calculate each category's share of sales. |
 | `11_data_segmentation.sql` | Segment products and customers. |
 | `12_report_customers.sql` | Query customer metrics. |
-| `13_report_products.sql` | Create a view of product metrics. |
+| `13_report_products.sql` | Create a view of metrics for products with dated sales. |
 
-Run these scripts against `DataWarehouseAnalytics`, which needs the `gold.dim_customers`, `gold.dim_products`, and `gold.fact_sales` views. Scripts `01`–`12` are queries. `13_report_products.sql` creates or updates a view; check its result with `SELECT * FROM gold.report_products;`.
+Scripts `01`–`12` are queries. `13_report_products.sql` creates or updates a view; check its result with `SELECT * FROM gold.report_products;`. The report excludes products without sales and sales without order dates.

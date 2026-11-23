@@ -1,6 +1,13 @@
+USE DataWarehouse;
+GO
+
+IF SCHEMA_ID(N'silver') IS NULL
+    EXEC(N'CREATE SCHEMA silver');
+GO
+
 /*
 ===============================================================================
-DDL Script: Create Bronze Tables
+DDL Script: Create Silver Tables
 ===============================================================================
 */
 

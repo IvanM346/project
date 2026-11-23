@@ -9,21 +9,28 @@ Script Purpose:
     It truncates the bronze tables and uses BULK INSERT to load the CSV files.
 
 Parameters:
-    None.
+    @source_root: directory containing source_crm and source_erp.
 
 Usage Example:
     EXEC bronze.load_bronze;
 
 Note:
-    The BULK INSERT paths point to 'C:\sql\crm_erp\'.
+    The default path is 'C:\sql\crm_erp'. Pass a Linux path for Docker.
 ===============================================================================
 */
-CREATE OR ALTER PROCEDURE bronze.load_bronze AS
+CREATE OR ALTER PROCEDURE bronze.load_bronze
+    @source_root NVARCHAR(4000) = N'C:\sql\crm_erp'
+AS
 BEGIN
     SET XACT_ABORT ON;
 
     DECLARE @start_time DATETIME, @end_time DATETIME,
-            @batch_start_time DATETIME, @batch_end_time DATETIME;
+            @batch_start_time DATETIME, @batch_end_time DATETIME,
+            @separator NCHAR(1), @file_path NVARCHAR(4000), @bulk_sql NVARCHAR(MAX);
+
+    SET @separator = CASE WHEN LEFT(@source_root, 1) = N'/' THEN N'/' ELSE N'\' END;
+    IF RIGHT(@source_root, 1) = @separator
+        SET @source_root = LEFT(@source_root, LEN(@source_root) - 1);
 
     BEGIN TRY
         BEGIN TRANSACTION;
@@ -40,9 +47,11 @@ BEGIN
         PRINT '>> Truncating Table: bronze.crm_cust_info';
         TRUNCATE TABLE bronze.crm_cust_info;
         PRINT '>> Inserting Data Into: bronze.crm_cust_info';
-        BULK INSERT bronze.crm_cust_info
-        FROM 'C:\sql\crm_erp\source_crm\cust_info.csv'
-        WITH (FIRSTROW = 2, FIELDTERMINATOR = ',', TABLOCK);
+        SET @file_path = CONCAT(@source_root, @separator, N'source_crm', @separator, N'cust_info.csv');
+        SET @bulk_sql = N'BULK INSERT bronze.crm_cust_info FROM '''
+            + REPLACE(@file_path, N'''', N'''''')
+            + N''' WITH (FIRSTROW = 2, FIELDTERMINATOR = '','', TABLOCK);';
+        EXEC sys.sp_executesql @bulk_sql;
         SET @end_time = GETDATE();
         PRINT '>> Load Duration: ' + CAST(DATEDIFF(SECOND, @start_time, @end_time) AS NVARCHAR) + ' seconds';
         PRINT '>> -------------';
@@ -51,9 +60,11 @@ BEGIN
         PRINT '>> Truncating Table: bronze.crm_prd_info';
         TRUNCATE TABLE bronze.crm_prd_info;
         PRINT '>> Inserting Data Into: bronze.crm_prd_info';
-        BULK INSERT bronze.crm_prd_info
-        FROM 'C:\sql\crm_erp\source_crm\prd_info.csv'
-        WITH (FIRSTROW = 2, FIELDTERMINATOR = ',', TABLOCK);
+        SET @file_path = CONCAT(@source_root, @separator, N'source_crm', @separator, N'prd_info.csv');
+        SET @bulk_sql = N'BULK INSERT bronze.crm_prd_info FROM '''
+            + REPLACE(@file_path, N'''', N'''''')
+            + N''' WITH (FIRSTROW = 2, FIELDTERMINATOR = '','', TABLOCK);';
+        EXEC sys.sp_executesql @bulk_sql;
         SET @end_time = GETDATE();
         PRINT '>> Load Duration: ' + CAST(DATEDIFF(SECOND, @start_time, @end_time) AS NVARCHAR) + ' seconds';
         PRINT '>> -------------';
@@ -62,9 +73,11 @@ BEGIN
         PRINT '>> Truncating Table: bronze.crm_sales_details';
         TRUNCATE TABLE bronze.crm_sales_details;
         PRINT '>> Inserting Data Into: bronze.crm_sales_details';
-        BULK INSERT bronze.crm_sales_details
-        FROM 'C:\sql\crm_erp\source_crm\sales_details.csv'
-        WITH (FIRSTROW = 2, FIELDTERMINATOR = ',', TABLOCK);
+        SET @file_path = CONCAT(@source_root, @separator, N'source_crm', @separator, N'sales_details.csv');
+        SET @bulk_sql = N'BULK INSERT bronze.crm_sales_details FROM '''
+            + REPLACE(@file_path, N'''', N'''''')
+            + N''' WITH (FIRSTROW = 2, FIELDTERMINATOR = '','', TABLOCK);';
+        EXEC sys.sp_executesql @bulk_sql;
         SET @end_time = GETDATE();
         PRINT '>> Load Duration: ' + CAST(DATEDIFF(SECOND, @start_time, @end_time) AS NVARCHAR) + ' seconds';
         PRINT '>> -------------';
@@ -77,9 +90,11 @@ BEGIN
         PRINT '>> Truncating Table: bronze.erp_loc_a101';
         TRUNCATE TABLE bronze.erp_loc_a101;
         PRINT '>> Inserting Data Into: bronze.erp_loc_a101';
-        BULK INSERT bronze.erp_loc_a101
-        FROM 'C:\sql\crm_erp\source_erp\loc_a101.csv'
-        WITH (FIRSTROW = 2, FIELDTERMINATOR = ',', TABLOCK);
+        SET @file_path = CONCAT(@source_root, @separator, N'source_erp', @separator, N'LOC_A101.csv');
+        SET @bulk_sql = N'BULK INSERT bronze.erp_loc_a101 FROM '''
+            + REPLACE(@file_path, N'''', N'''''')
+            + N''' WITH (FIRSTROW = 2, FIELDTERMINATOR = '','', TABLOCK);';
+        EXEC sys.sp_executesql @bulk_sql;
         SET @end_time = GETDATE();
         PRINT '>> Load Duration: ' + CAST(DATEDIFF(SECOND, @start_time, @end_time) AS NVARCHAR) + ' seconds';
         PRINT '>> -------------';
@@ -88,9 +103,11 @@ BEGIN
         PRINT '>> Truncating Table: bronze.erp_cust_az12';
         TRUNCATE TABLE bronze.erp_cust_az12;
         PRINT '>> Inserting Data Into: bronze.erp_cust_az12';
-        BULK INSERT bronze.erp_cust_az12
-        FROM 'C:\sql\crm_erp\source_erp\cust_az12.csv'
-        WITH (FIRSTROW = 2, FIELDTERMINATOR = ',', TABLOCK);
+        SET @file_path = CONCAT(@source_root, @separator, N'source_erp', @separator, N'CUST_AZ12.csv');
+        SET @bulk_sql = N'BULK INSERT bronze.erp_cust_az12 FROM '''
+            + REPLACE(@file_path, N'''', N'''''')
+            + N''' WITH (FIRSTROW = 2, FIELDTERMINATOR = '','', TABLOCK);';
+        EXEC sys.sp_executesql @bulk_sql;
         SET @end_time = GETDATE();
         PRINT '>> Load Duration: ' + CAST(DATEDIFF(SECOND, @start_time, @end_time) AS NVARCHAR) + ' seconds';
         PRINT '>> -------------';
@@ -99,9 +116,11 @@ BEGIN
         PRINT '>> Truncating Table: bronze.erp_px_cat_g1v2';
         TRUNCATE TABLE bronze.erp_px_cat_g1v2;
         PRINT '>> Inserting Data Into: bronze.erp_px_cat_g1v2';
-        BULK INSERT bronze.erp_px_cat_g1v2
-        FROM 'C:\sql\crm_erp\source_erp\px_cat_g1v2.csv'
-        WITH (FIRSTROW = 2, FIELDTERMINATOR = ',', TABLOCK);
+        SET @file_path = CONCAT(@source_root, @separator, N'source_erp', @separator, N'PX_CAT_G1V2.csv');
+        SET @bulk_sql = N'BULK INSERT bronze.erp_px_cat_g1v2 FROM '''
+            + REPLACE(@file_path, N'''', N'''''')
+            + N''' WITH (FIRSTROW = 2, FIELDTERMINATOR = '','', TABLOCK);';
+        EXEC sys.sp_executesql @bulk_sql;
         SET @end_time = GETDATE();
         PRINT '>> Load Duration: ' + CAST(DATEDIFF(SECOND, @start_time, @end_time) AS NVARCHAR) + ' seconds';
         PRINT '>> -------------';
