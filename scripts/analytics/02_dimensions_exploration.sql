@@ -1,3 +1,4 @@
+-- Уникальные значения в справочниках.
 USE DataWarehouseAnalytics;
 GO
 

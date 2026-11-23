@@ -1,3 +1,4 @@
+-- Период заказов и возраст клиентов.
 USE DataWarehouseAnalytics;
 GO
 
@@ -5,10 +6,10 @@ SELECT
     MIN(order_date) AS first_date,
     MAX(order_date) AS last_order_date,
     DATEDIFF(MONTH, MIN(order_date), MAX(order_date)) AS order_range_months
-FROM gold.fact_sales; 
+FROM gold.fact_sales;
 
 
-SELECT 
+SELECT
     MIN(birth_date) AS oldest_birthdate,
     DATEDIFF(YEAR, MIN(birth_date), GETDATE()) AS oldest_age,
     MAX(birth_date) as youngest_birthdate,

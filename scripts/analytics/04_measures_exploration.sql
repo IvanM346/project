@@ -1,3 +1,4 @@
+-- Основные показатели продаж.
 USE DataWarehouseAnalytics;
 GO
 
