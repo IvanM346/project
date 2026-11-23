@@ -1,4 +1,4 @@
--- Продажи по месяцам.
+-- Monthly sales trends (Продажи по месяцам)
 SELECT
     YEAR(order_date)             AS order_year,
     MONTH(order_date)            AS order_month,
@@ -10,7 +10,7 @@ WHERE order_date IS NOT NULL
 GROUP BY YEAR(order_date), MONTH(order_date)
 ORDER BY YEAR(order_date), MONTH(order_date);
 
--- Тот же результат через DATETRUNC
+-- Same result using DATETRUNC (Тот же результат через DATETRUNC)
 SELECT
     DATETRUNC(month, order_date) AS order_date,
     SUM(sales_amount)            AS total_sales,

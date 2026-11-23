@@ -1,4 +1,4 @@
--- Группы товаров и клиентов.
+-- Product and customer segments (Группы товаров и клиентов)
 WITH product_segment AS(
 SELECT
     product_key,

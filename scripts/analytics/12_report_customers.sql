@@ -1,4 +1,4 @@
--- Отчёт по клиентам.
+-- Customer report (Отчёт по клиентам)
 WITH base_query AS (
     SELECT
         f.order_number,

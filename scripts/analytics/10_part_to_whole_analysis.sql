@@ -1,4 +1,4 @@
--- Доля категории в общей выручке.
+-- Category share of total sales (Доля категории в общей выручке)
 WITH category_sales AS(
  SELECT
     category,

@@ -1,4 +1,4 @@
--- Основные показатели продаж.
+-- Key sales measures (Основные показатели продаж)
 USE DataWarehouseAnalytics;
 GO
 

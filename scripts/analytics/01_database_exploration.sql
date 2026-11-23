@@ -1,4 +1,4 @@
--- Таблицы и столбцы слоя Gold.
+-- Gold tables and columns (Таблицы и столбцы слоя Gold)
 USE DataWarehouseAnalytics;
 GO
 

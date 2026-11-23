@@ -1,4 +1,4 @@
--- Продажи товаров по годам.
+-- Product sales by year (Продажи товаров по годам)
 WITH yearly_product_sales AS (
     SELECT
         YEAR(f.order_date)  AS order_year,
@@ -23,7 +23,7 @@ SELECT
         WHEN current_sales - AVG(current_sales) OVER (PARTITION BY product_name) < 0 THEN 'Below Avg'
         ELSE 'Avg'
     END                                                                 AS avg_change,
-    -- Сравнение с прошлым годом
+    -- Year-over-year comparison (Сравнение с прошлым годом)
     LAG(current_sales) OVER (PARTITION BY product_name ORDER BY order_year) AS py_sales,
     current_sales - LAG(current_sales) OVER (PARTITION BY product_name ORDER BY order_year) AS diff_py,
     CASE

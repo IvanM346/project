@@ -1,4 +1,4 @@
--- Период заказов и возраст клиентов.
+-- Order date range and customer ages (Период заказов и возраст клиентов)
 USE DataWarehouseAnalytics;
 GO
 

@@ -1,10 +1,10 @@
--- Отчёт по товарам.
+-- Product report (Отчёт по товарам)
 USE DataWarehouseAnalytics;
 GO
 
 CREATE OR ALTER VIEW gold.report_products AS
 WITH base_query AS (
-    -- Продажи вместе с данными о товаре.
+    -- Sales with product details (Продажи вместе с данными о товаре)
     SELECT
         f.order_number,
         f.order_date,
@@ -22,7 +22,7 @@ WITH base_query AS (
     WHERE f.order_date IS NOT NULL
 ),
 product_aggregation AS (
-    -- Показатели каждого товара.
+    -- Metrics for each product (Показатели каждого товара)
     SELECT
         product_key,
         product_name,
@@ -47,7 +47,7 @@ SELECT
     cost,
     last_sale_date,
     DATEDIFF(MONTH, last_sale_date, GETDATE()) AS recency_in_months,
-    -- Группа по выручке.
+    -- Segment by revenue (Группа по выручке)
     CASE
         WHEN total_sales > 50000 THEN 'High-Performer'
         WHEN total_sales >= 10000 THEN 'Mid-Range'

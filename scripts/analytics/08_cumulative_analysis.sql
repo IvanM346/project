@@ -1,4 +1,4 @@
--- Накопленные продажи и средняя цена.
+-- Cumulative sales and average price (Накопленные продажи и средняя цена)
 SELECT
     order_date,
     total_sales,

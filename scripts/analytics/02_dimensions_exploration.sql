@@ -1,4 +1,4 @@
--- Уникальные значения в справочниках.
+-- Unique dimension values (Уникальные значения в справочниках)
 USE DataWarehouseAnalytics;
 GO
 

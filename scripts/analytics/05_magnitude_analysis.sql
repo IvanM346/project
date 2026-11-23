@@ -1,8 +1,8 @@
--- Распределение клиентов, товаров и продаж.
+-- Customer, product, and sales distribution (Распределение клиентов, товаров и продаж)
 USE DataWarehouseAnalytics;
 GO
 
--- Клиенты по странам
+-- Customers by country (Клиенты по странам)
 SELECT
     country,
     COUNT(customer_key) AS total_customers
@@ -10,7 +10,7 @@ FROM gold.dim_customers
 GROUP BY country
 ORDER BY total_customers DESC;
 
--- Клиенты по полу
+-- Customers by gender (Клиенты по полу)
 SELECT
     gender,
     COUNT(customer_key) AS total_customers
@@ -18,7 +18,7 @@ FROM gold.dim_customers
 GROUP BY gender
 ORDER BY total_customers DESC;
 
--- Товары по категориям
+-- Products by category (Товары по категориям)
 SELECT
     category,
     COUNT(product_key) AS total_products
@@ -26,7 +26,7 @@ FROM gold.dim_products
 GROUP BY category
 ORDER BY total_products DESC;
 
--- Средняя стоимость по категориям
+-- Average cost by category (Средняя стоимость по категориям)
 SELECT
     category,
     AVG(cost) AS avg_cost
@@ -34,7 +34,7 @@ FROM gold.dim_products
 GROUP BY category
 ORDER BY avg_cost DESC;
 
--- Выручка по категориям
+-- Revenue by category (Выручка по категориям)
 SELECT
     p.category,
     SUM(f.sales_amount) AS total_revenue
@@ -44,7 +44,7 @@ LEFT JOIN gold.dim_products p
 GROUP BY p.category
 ORDER BY total_revenue DESC;
 
--- Включая категории без продаж
+-- Including categories with no sales (Включая категории без продаж)
 SELECT
     p.category,
     SUM(f.sales_amount) AS total_revenue
@@ -54,7 +54,7 @@ LEFT JOIN gold.fact_sales f
 GROUP BY p.category
 ORDER BY total_revenue DESC;
 
--- Выручка по клиентам
+-- Revenue by customer (Выручка по клиентам)
 SELECT
     c.customer_key,
     c.first_name,
@@ -69,7 +69,7 @@ GROUP BY
     c.last_name
 ORDER BY total_revenue DESC;
 
--- Проданные товары по странам
+-- Items sold by country (Проданные товары по странам)
 SELECT
     c.country,
     SUM(f.quantity) AS total_sold_items

@@ -9,8 +9,9 @@ project/
 ├── datasets/               исходные CSV-файлы проекта
 │   ├── source_crm/         три файла из CRM
 │   └── source_erp/         три файла из ERP
-├── docs/                   схема звезды (star schema)
+├── docs/                   схемы архитектуры и данных
 ├── scripts/                скрипты проекта, по уровням
+│   ├── analytics/          13 запросов для анализа слоя Gold
 │   ├── bronze/             загружает исходные файлы как есть
 │   ├── silver/             очищает и готовит данные
 │   └── gold/               строит представления для анализа
@@ -41,7 +42,27 @@ project/
 4. Выполни `scripts/gold/ddl_gold.sql` — он создаёт схему `gold` и три представления.
 5. Проверь, что количество строк в Bronze совпадает с количеством строк данных в соответствующем CSV без заголовка, а в Silver — не больше, чем в Bronze.
 
-Дальше по плану — аналитические запросы поверх Gold: продажи по товарам, клиентам, странам и времени.
+## Аналитика
+
+В `scripts/analytics` лежат 13 SQL-файлов для анализа данных из Gold. Они помогают изучить продажи, клиентов и товары: от простых показателей до сравнений по времени и отчётов. Комментарии в SQL написаны на английском, а перевод дан в скобках.
+
+| Файл | Что делает |
+|---|---|
+| `01_database_exploration.sql` | Изучает таблицы и столбцы Gold. |
+| `02_dimensions_exploration.sql` | Показывает значения в справочниках. |
+| `03_date_range_exploration.sql` | Находит диапазон дат заказов и возраст клиентов. |
+| `04_measures_exploration.sql` | Считает основные показатели продаж. |
+| `05_magnitude_analysis.sql` | Группирует клиентов, товары и продажи. |
+| `06_ranking_analysis.sql` | Строит рейтинги товаров и клиентов. |
+| `07_change_over_time_analysis.sql` | Показывает продажи по месяцам. |
+| `08_cumulative_analysis.sql` | Считает накопительные продажи. |
+| `09_performance_analysis.sql` | Сравнивает продажи товаров по годам. |
+| `10_part_to_whole_analysis.sql` | Считает долю каждой категории в продажах. |
+| `11_data_segmentation.sql` | Делит товары и клиентов на группы. |
+| `12_report_customers.sql` | Строит запрос с показателями по клиентам. |
+| `13_report_products.sql` | Создаёт представление с показателями по товарам. |
+
+Для запуска нужна база `DataWarehouseAnalytics` с представлениями `gold.dim_customers`, `gold.dim_products` и `gold.fact_sales`. Скрипты `01`–`12` выполняются как запросы. Скрипт `13_report_products.sql` создаёт или обновляет представление; после него результат можно посмотреть через `SELECT * FROM gold.report_products;`.
 
 ---
 
@@ -56,8 +77,9 @@ project/
 ├── datasets/               the project's source CSV files
 │   ├── source_crm/         three files from the CRM system
 │   └── source_erp/         three files from the ERP system
-├── docs/                   the star schema diagram
+├── docs/                   architecture and data diagrams
 ├── scripts/                the project scripts, by level
+│   ├── analytics/          13 queries for analyzing the Gold layer
 │   ├── bronze/             loads the raw source files
 │   ├── silver/             cleans and prepares the data
 │   └── gold/               builds the views for analysis
@@ -88,4 +110,24 @@ Each rerun clears that level's tables and reloads the data in full.
 4. Run `scripts/gold/ddl_gold.sql` — it creates the `gold` schema and the three views.
 5. Check row counts: Bronze should match the CSV row count (excluding the header); Silver should be at or below Bronze's count.
 
-The next step is analytical queries on top of Gold: sales by product, customer, country, and time.
+## Analytics
+
+The `scripts/analytics` folder contains 13 SQL files for analyzing Gold data. They cover sales, customers, and products, from basic measures to time comparisons and reports. SQL comments are in English with Russian translations in parentheses.
+
+| File | Purpose |
+|---|---|
+| `01_database_exploration.sql` | Explore Gold tables and columns. |
+| `02_dimensions_exploration.sql` | Explore dimension values. |
+| `03_date_range_exploration.sql` | Find order date ranges and customer ages. |
+| `04_measures_exploration.sql` | Calculate key sales measures. |
+| `05_magnitude_analysis.sql` | Group customers, products, and sales. |
+| `06_ranking_analysis.sql` | Rank products and customers. |
+| `07_change_over_time_analysis.sql` | Show monthly sales. |
+| `08_cumulative_analysis.sql` | Calculate cumulative sales. |
+| `09_performance_analysis.sql` | Compare product sales across years. |
+| `10_part_to_whole_analysis.sql` | Calculate each category's share of sales. |
+| `11_data_segmentation.sql` | Segment products and customers. |
+| `12_report_customers.sql` | Query customer metrics. |
+| `13_report_products.sql` | Create a view of product metrics. |
+
+Run these scripts against `DataWarehouseAnalytics`, which needs the `gold.dim_customers`, `gold.dim_products`, and `gold.fact_sales` views. Scripts `01`–`12` are queries. `13_report_products.sql` creates or updates a view; check its result with `SELECT * FROM gold.report_products;`.

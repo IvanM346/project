@@ -1,8 +1,8 @@
--- Рейтинг товаров и клиентов.
+-- Product and customer ranking (Рейтинг товаров и клиентов)
 USE DataWarehouseAnalytics;
 GO
 
--- Топ-5 товаров по выручке
+-- Top 5 products by revenue (Топ-5 товаров по выручке)
 SELECT TOP 5
     p.product_name,
     SUM(f.sales_amount) AS total_revenue
@@ -12,7 +12,7 @@ LEFT JOIN gold.dim_products p
 GROUP BY p.product_name
 ORDER BY total_revenue DESC;
 
--- Топ-5 с учётом равных мест
+-- Top 5 including ties (Топ-5 с учётом равных мест)
 SELECT *
 FROM (
     SELECT
@@ -26,7 +26,7 @@ FROM (
 ) AS ranked_products
 WHERE rank_products <= 5;
 
--- Пять товаров с наименьшей выручкой
+-- Bottom 5 products by revenue (Пять товаров с наименьшей выручкой)
 SELECT TOP 5
     p.product_name,
     SUM(f.sales_amount) AS total_revenue
@@ -36,7 +36,7 @@ LEFT JOIN gold.dim_products p
 GROUP BY p.product_name
 ORDER BY total_revenue;
 
--- Включая товары без продаж
+-- Including products with no sales (Включая товары без продаж)
 SELECT TOP 5
     p.product_name,
     COALESCE(SUM(f.sales_amount), 0) AS total_revenue
@@ -46,7 +46,7 @@ LEFT JOIN gold.fact_sales f
 GROUP BY p.product_name
 ORDER BY total_revenue;
 
--- Топ-10 клиентов по выручке
+-- Top 10 customers by revenue (Топ-10 клиентов по выручке)
 SELECT TOP 10
     c.customer_key,
     c.first_name,
@@ -61,7 +61,7 @@ GROUP BY
     c.last_name
 ORDER BY total_revenue DESC;
 
--- Три клиента с наименьшим числом заказов
+-- Three customers with the fewest orders (Три клиента с наименьшим числом заказов)
 SELECT TOP 3
     c.customer_key,
     c.first_name,
@@ -76,7 +76,7 @@ GROUP BY
     c.last_name
 ORDER BY total_orders ;
 
--- Все клиенты с минимальным числом заказов
+-- All customers tied for the fewest orders (Все клиенты с минимальным числом заказов)
 SELECT *
 FROM (
     SELECT
