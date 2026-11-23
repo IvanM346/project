@@ -1,4 +1,3 @@
-
 USE DataWarehouseAnalytics;
 GO
 
