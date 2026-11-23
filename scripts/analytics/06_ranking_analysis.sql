@@ -1,8 +1,7 @@
 USE DataWarehouseAnalytics;
 GO
 
--- Which 5 products Generating the Highest Revenue?
--- Simple Ranking
+-- Top 5 products by revenue
 SELECT TOP 5
     p.product_name,
     SUM(f.sales_amount) AS total_revenue
@@ -12,7 +11,7 @@ LEFT JOIN gold.dim_products p
 GROUP BY p.product_name
 ORDER BY total_revenue DESC;
 
--- Complex but Flexibly Ranking Using Window Functions
+-- Top 5 with RANK()
 SELECT *
 FROM (
     SELECT
@@ -26,7 +25,7 @@ FROM (
 ) AS ranked_products
 WHERE rank_products <= 5;
 
--- What are the 5 worst-performing products in terms of sales?
+-- Lowest 5 products with sales
 SELECT TOP 5
     p.product_name,
     SUM(f.sales_amount) AS total_revenue
@@ -36,8 +35,7 @@ LEFT JOIN gold.dim_products p
 GROUP BY p.product_name
 ORDER BY total_revenue;
 
--- Starting from the fact table shows only products that sold at least once.
--- Start from the dimension to include the products that never sold (the real worst performers).
+-- Include products without sales
 SELECT TOP 5
     p.product_name,
     COALESCE(SUM(f.sales_amount), 0) AS total_revenue
@@ -47,7 +45,7 @@ LEFT JOIN gold.fact_sales f
 GROUP BY p.product_name
 ORDER BY total_revenue;
 
--- Find the top 10 customers who have generated the highest revenue
+-- Top 10 customers by revenue
 SELECT TOP 10
     c.customer_key,
     c.first_name,
@@ -62,7 +60,7 @@ GROUP BY
     c.last_name
 ORDER BY total_revenue DESC;
 
--- The 3 customers with the fewest orders placed
+-- 3 customers with fewest orders
 SELECT TOP 3
     c.customer_key,
     c.first_name,
@@ -77,8 +75,7 @@ GROUP BY
     c.last_name
 ORDER BY total_orders ;
 
--- Many customers share the lowest number of orders, so TOP 3 picks three of them at random.
--- Rank them instead to see every customer at the lowest level.
+-- All customers tied for fewest orders
 SELECT *
 FROM (
     SELECT
