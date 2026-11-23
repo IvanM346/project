@@ -44,7 +44,7 @@ project/
 
 ## Аналитика
 
-В `scripts/analytics` лежат 13 SQL-файлов для анализа данных из Gold. Они помогают изучить продажи, клиентов и товары: от простых показателей до сравнений по времени и отчётов. Комментарии в SQL написаны на английском, а перевод дан в скобках.
+В `scripts/analytics` лежат 13 SQL-файлов для анализа данных из Gold. Они помогают изучить продажи, клиентов и товары: от простых показателей до сравнений по времени и отчётов.
 
 | Файл | Что делает |
 |---|---|
@@ -98,7 +98,7 @@ Each rerun clears that level's tables and reloads the data in full.
 
 ## How to run
 
-1. Download the source CSV files from the [Data with Baraa repository](https://github.com/DataWithBaraa/sql-data-warehouse-project), or use the copies in `datasets`. Place `source_crm` and `source_erp` in `C:\sql\crm_erp\` or update the paths in all six `BULK INSERT` statements.
+1. Use the CSV files in `datasets`. Place `source_crm` and `source_erp` in `C:\sql\crm_erp\` or update the paths in all six `BULK INSERT` statements.
 2. Connect to SQL Server in SSMS and run the scripts in `scripts/bronze` in this order.
    1. `init_bronze.sql` creates the `DataWarehouse` database and the `bronze` schema.
    2. `ddl_bronze.sql` creates the six tables.
@@ -112,7 +112,7 @@ Each rerun clears that level's tables and reloads the data in full.
 
 ## Analytics
 
-The `scripts/analytics` folder contains 13 SQL files for analyzing Gold data. They cover sales, customers, and products, from basic measures to time comparisons and reports. SQL comments are in English with Russian translations in parentheses.
+The `scripts/analytics` folder contains 13 SQL files for analyzing Gold data. They cover sales, customers, and products, from basic measures to time comparisons and reports.
 
 | File | Purpose |
 |---|---|
