@@ -6,6 +6,7 @@ SELECT
     COUNT(DISTINCT customer_key) AS total_customers,
     SUM(quantity)                AS total_quantity
 FROM gold.fact_sales
+-- Exclude orders without dates (Исключаем заказы без даты)
 WHERE order_date IS NOT NULL
 GROUP BY YEAR(order_date), MONTH(order_date)
 ORDER BY YEAR(order_date), MONTH(order_date);

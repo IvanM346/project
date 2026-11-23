@@ -8,6 +8,7 @@ SELECT SUM(quantity) AS total_quantity FROM gold.fact_sales;
 
 SELECT AVG(price) AS avg_price FROM gold.fact_sales;
 
+-- Compare all rows with unique orders (Сравнение строк с уникальными заказами)
 SELECT COUNT(order_number) AS total_orders FROM gold.fact_sales;
 SELECT COUNT(DISTINCT order_number) AS total_orders FROM gold.fact_sales;
 
@@ -17,6 +18,7 @@ SELECT COUNT(customer_key) AS total_customers FROM gold.dim_customers;
 
 SELECT COUNT(DISTINCT customer_key) AS total_customers FROM gold.fact_sales;
 
+-- Show key measures in one result (Основные показатели в одном результате)
 SELECT 'Total Sales' AS measure_name, SUM(sales_amount) AS measure_value FROM gold.fact_sales
 UNION ALL
 SELECT 'Total Quantity', SUM(quantity) FROM gold.fact_sales

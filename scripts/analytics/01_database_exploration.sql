@@ -6,6 +6,7 @@ SELECT *
 FROM INFORMATION_SCHEMA.TABLES
 WHERE TABLE_SCHEMA = 'gold';
 
+-- Inspect customer columns (Проверка столбцов клиентов)
 SELECT *
 FROM INFORMATION_SCHEMA.COLUMNS
 WHERE TABLE_SCHEMA = 'gold'

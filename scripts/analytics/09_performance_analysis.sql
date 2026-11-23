@@ -16,6 +16,7 @@ SELECT
     order_year,
     product_name,
     current_sales,
+    -- Compare each year with the product average (Сравнение года со средним по товару)
     AVG(current_sales) OVER (PARTITION BY product_name)                 AS avg_sales,
     current_sales - AVG(current_sales) OVER (PARTITION BY product_name) AS diff_avg,
     CASE

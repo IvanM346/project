@@ -1,4 +1,5 @@
 -- Cumulative sales and average price (Накопленные продажи и средняя цена)
+-- Calculate running values from yearly totals (Накопительные показатели по годовым итогам)
 SELECT
     order_date,
     total_sales,

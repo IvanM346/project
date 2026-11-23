@@ -9,6 +9,7 @@ SELECT
 FROM gold.fact_sales;
 
 
+-- Find the oldest and youngest customers (Поиск самого старшего и младшего клиента)
 SELECT
     MIN(birth_date) AS oldest_birthdate,
     DATEDIFF(YEAR, MIN(birth_date), GETDATE()) AS oldest_age,

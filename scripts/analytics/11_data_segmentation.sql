@@ -1,4 +1,5 @@
 -- Product and customer segments (Группы товаров и клиентов)
+-- Group products by cost (Группировка товаров по стоимости)
 WITH product_segment AS(
 SELECT
     product_key,
@@ -18,6 +19,7 @@ FROM product_segment
 GROUP BY cost_range
 ORDER BY total_products DESC;
 
+-- Group customers by spending and activity (Группировка клиентов по тратам и активности)
 WITH customer_spending AS (
     SELECT
         c.customer_key,

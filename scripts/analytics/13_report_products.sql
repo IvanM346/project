@@ -59,6 +59,7 @@ SELECT
     total_quantity,
     total_customers,
     avg_selling_price,
+    -- Avoid division by zero in averages (Избегаем деления на ноль в средних)
     CASE
         WHEN total_orders = 0 THEN 0
         ELSE total_sales / total_orders

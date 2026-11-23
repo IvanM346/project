@@ -6,6 +6,7 @@ SELECT DISTINCT country
 FROM gold.dim_customers
 ORDER BY country;
 
+-- Check category and subcategory pairs (Проверка пар категорий и подкатегорий)
 SELECT DISTINCT category, subcategory
 FROM gold.dim_products
 ORDER BY category, subcategory;

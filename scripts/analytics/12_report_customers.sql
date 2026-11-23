@@ -1,4 +1,5 @@
 -- Customer report (Отчёт по клиентам)
+-- Join sales with customer details (Соединяем продажи с данными клиентов)
 WITH base_query AS (
     SELECT
         f.order_number,
@@ -16,6 +17,7 @@ WITH base_query AS (
     WHERE f.order_date IS NOT NULL
 ),
 
+-- Calculate metrics per customer (Считаем показатели каждого клиента)
 customer_aggregation AS (
     SELECT
         customer_key,
@@ -36,6 +38,7 @@ customer_aggregation AS (
         age
 )
 
+-- Add age and spending segments (Добавляем группы по возрасту и тратам)
 SELECT
     customer_key,
     customer_number,
